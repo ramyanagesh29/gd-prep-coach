@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const topicsRouter = require('./routes/topics');
 const authRouter = require('./routes/auth');
+const attemptsRouter = require('./routes/attempts');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/topics', topicsRouter);
+app.use('/api/attempts', attemptsRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {

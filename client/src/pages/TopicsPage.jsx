@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import TopicCard from '../components/TopicCard';
 
@@ -9,6 +10,7 @@ export default function TopicsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchTopics() {
@@ -28,14 +30,14 @@ export default function TopicsPage() {
   }, [selectedCategory]);
 
   function handleStart(topic) {
-    alert(`Starting practice for: ${topic.title}\n(Practice page is built on Day 4 of the Blueprint)`);
+    navigate('/practice', { state: { topic } });
   }
 
   return (
     <div>
       <h2>GD Topics</h2>
 
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
