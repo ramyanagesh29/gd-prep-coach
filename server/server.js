@@ -5,6 +5,7 @@ const cors = require('cors');
 const topicsRouter = require('./routes/topics');
 const authRouter = require('./routes/auth');
 const attemptsRouter = require('./routes/attempts');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/topics', topicsRouter);
 app.use('/api/attempts', attemptsRouter);
+app.use('/api/users', usersRouter);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -23,11 +25,13 @@ app.get('/api/health', (req, res) => {
 });
 
 // Connect to MongoDB
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ MongoDB connection error:', err.message));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
