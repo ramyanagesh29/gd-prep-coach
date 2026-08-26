@@ -1,92 +1,81 @@
 # GD Prep Coach — Project Structure
 
-**Day 2 Deliverable | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
+**Updated Day 5 | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
 
 ```
 gd-prep-coach/
-├── client/                          # React frontend (Vite)
+├── client/
 │   ├── src/
-│   │   ├── pages/                   # One file per screen
-│   │   │   ├── Login.jsx
-│   │   │   ├── Signup.jsx
-│   │   │   ├── DashboardPage.jsx
-│   │   │   ├── TopicsPage.jsx
-│   │   │   ├── PracticePage.jsx
-│   │   │   ├── ResultsPage.jsx
-│   │   │   └── HistoryPage.jsx
-│   │   ├── components/              # Reusable UI pieces
-│   │   │   ├── NavBar.jsx
-│   │   │   ├── TopicCard.jsx
-│   │   │   ├── ScoreBadge.jsx
-│   │   │   ├── StreakBadge.jsx
-│   │   │   ├── GoalProgressBar.jsx
-│   │   │   ├── Toast.jsx
-│   │   │   └── EmptyState.jsx
-│   │   ├── hooks/                   # Custom React hooks
-│   │   │   └── useSpeechRecognition.js
-│   │   ├── api/                     # Axios instance + API calls
-│   │   │   └── axios.js
-│   │   ├── styles/                  # Theme/design system
-│   │   │   └── theme.css
-│   │   ├── App.jsx                  # Routes definition
-│   │   └── main.jsx                 # Entry point
-│   ├── index.html
-│   ├── package.json
-│   └── .env.production              # VITE_API_URL (set on Day 9)
+│   │   ├── pages/
+│   │   │   ├── Login.jsx            ✅ Functional (Day 4)
+│   │   │   ├── Signup.jsx           ✅ Functional (Day 4)
+│   │   │   ├── DashboardPage.jsx    ⏳ Day 6
+│   │   │   ├── TopicsPage.jsx       ✅ Functional (Day 4/5)
+│   │   │   ├── PracticePage.jsx     ✅ Functional (Day 5) — text + voice input
+│   │   │   ├── ResultsPage.jsx      ✅ Functional (Day 5) — AI score + feedback display
+│   │   │   └── HistoryPage.jsx      ⏳ Day 6
+│   │   ├── components/
+│   │   │   ├── NavBar.jsx           ✅ Created (Day 3)
+│   │   │   ├── TopicCard.jsx        ✅ Created (Day 4)
+│   │   │   ├── ScoreBadge.jsx       ⏳ Day 6 (may fold into ResultsPage inline styling)
+│   │   │   ├── StreakBadge.jsx      ⏳ Day 6
+│   │   │   ├── GoalProgressBar.jsx  ⏳ Day 6
+│   │   │   ├── Toast.jsx            ⏳ Day 7
+│   │   │   └── EmptyState.jsx       ⏳ Day 7
+│   │   ├── hooks/
+│   │   │   └── useSpeechRecognition.js  ✅ Created (Day 5) — Web Speech API wrapper
+│   │   ├── api/
+│   │   │   └── axios.js             ✅ Created (Day 3)
+│   │   ├── App.jsx                  ✅ Routing (Day 3)
+│   │   └── main.jsx                 ✅ Vite default
+│   └── package.json                 ✅ Configured
 │
-├── server/                          # Express backend
-│   ├── models/                      # Mongoose schemas
-│   │   ├── User.js
-│   │   ├── Topic.js
-│   │   └── Attempt.js
-│   ├── routes/                      # Route definitions
-│   │   ├── auth.js
-│   │   ├── topics.js
-│   │   ├── attempts.js
-│   │   └── users.js
+├── server/
+│   ├── models/
+│   │   ├── User.js                  ✅ Created (Day 3)
+│   │   ├── Topic.js                 ✅ Created (Day 4)
+│   │   └── Attempt.js               ✅ Created (Day 5) — score/feedback schema
+│   ├── routes/
+│   │   ├── auth.js                  ✅ Implemented (Day 4) — signup/login
+│   │   ├── topics.js                ✅ Implemented (Day 4)
+│   │   ├── attempts.js              ✅ Implemented (Day 5) — POST, GET history, GET :id
+│   │   └── users.js                 ⏳ Day 6
 │   ├── middleware/
-│   │   └── auth.js                  # JWT verification
+│   │   └── auth.js                  ✅ Created (Day 3)
 │   ├── services/
-│   │   └── analyzeResponse.js       # Claude API call logic
+│   │   └── analyzeResponse.js       ✅ Created (Day 5) — Gemini AI integration
 │   ├── utils/
-│   │   └── streak.js                # Streak/goal calculation logic
+│   │   └── streak.js                ⏳ Day 6
 │   ├── seed/
-│   │   └── seedTopics.js            # Curated topic seed data
-│   ├── server.js                    # App entry point
-│   ├── package.json
-│   └── .env                         # Never committed — in .gitignore
+│   │   └── seedTopics.js            ✅ Created (Day 4) — 22 curated topics
+│   ├── server.js                    ✅ Updated (Day 5) — all routers mounted
+│   ├── package.json                 ✅ Configured
+│   └── .env                         ✅ Includes GEMINI_API_KEY (Day 5)
 │
-├── docs/                            # All design documents (Day 2 output)
-│   ├── ARCHITECTURE.md
-│   ├── SCHEMA.md
-│   ├── API.md
-│   ├── UI-WIREFRAMES.md
-│   └── PROJECT-STRUCTURE.md
+├── docs/
+│   ├── ARCHITECTURE.md              ✅ (Day 2) — ⚠️ needs AI provider note (see below)
+│   ├── SCHEMA.md                    ✅ (Day 2)
+│   ├── API.md                       ✅ (Day 2)
+│   ├── UI-WIREFRAMES.md             ✅ (Day 2)
+│   ├── PROJECT-STRUCTURE.md         ✅ This file, updated Day 5
+│   ├── SETUP.md                     ✅ (Day 3)
+│   ├── ENVIRONMENT.md               ✅ (Day 3) — ⚠️ needs GEMINI_API_KEY added
+│   ├── DAY3-SUMMARY.md              ✅ (Day 3)
+│   └── DAY5-SUMMARY.md              ✅ New (Day 5)
 │
 ├── .gitignore
 └── README.md
 ```
 
-## Rationale
+## Key Change: AI Provider Switched to Google Gemini
 
-- **`client` and `server` fully separated** — each deploys independently (Vercel for client, Render for server), matching the hosting plan in the PRD.
-- **`pages/` vs `components/` split** — full screens are distinct from reusable pieces, and this maps directly to the Blueprint's daily build order (each day's Blueprint section names specific files here).
-- **`services/` isolates Claude API logic** — keeps AI-calling code testable and separate from route handlers, so debugging AI issues doesn't require digging through routing code.
-- **`utils/` for pure logic** — streak/goal calculations are pure functions, easy to unit test independently of the database or API.
-- **`seed/` for content, not code** — curated GD topics are data, kept separate from application logic.
-- **`docs/` centralizes planning artifacts** — every future day's fresh AI conversation can reference these files directly instead of re-deriving decisions.
-- **`.env` never committed** — both `client/.env.production` and `server/.env` contain environment-specific secrets/URLs and are excluded via `.gitignore`.
+**Original plan (PRD/Architecture, Day 1-2):** Anthropic Claude API for response analysis.
 
-## Where Future Code Will Live (Blueprint Cross-Reference)
+**Actual implementation (Day 5):** **Google Gemini API** (`gemini-3.6-flash` model, free tier).
 
-| Blueprint Day | Primary Files Touched |
-|---|---|
-| Day 2 (today) | `docs/*.md` only — no code yet |
-| Day 3 | `server/models/Topic.js`, `server/routes/topics.js`, `server/seed/seedTopics.js`, `client/src/pages/TopicsPage.jsx` |
-| Day 4 | `server/models/Attempt.js`, `server/routes/attempts.js`, `client/src/pages/PracticePage.jsx`, `client/src/hooks/useSpeechRecognition.js` |
-| Day 5 | `server/services/analyzeResponse.js`, `client/src/pages/ResultsPage.jsx` |
-| Day 6 | `server/utils/streak.js`, `client/src/pages/DashboardPage.jsx`, `client/src/pages/HistoryPage.jsx` |
-| Day 7 | `client/src/styles/theme.css`, `client/src/components/*` polish pass |
-| Day 8 | Bug fixes across existing files, `TESTING.md` (new, root level) |
-| Day 9 | `client/.env.production`, `server/.env` (production values), CORS config in `server.js` |
-| Day 10 | `README.md` (final version) |
+**Reason for change:** Anthropic's Claude API is pay-as-you-go with no ongoing free tier. Google's Gemini API offers a genuine free tier (no credit card required), which better fits this capstone's constraint of using only free tools. The architecture, prompt design, JSON response contract, and error-handling logic are **unchanged** — only the SDK/provider call inside `analyzeResponse.js` differs. This is a drop-in swap, not a redesign.
+
+## Legend
+- ✅ = File exists and is functional as of today
+- ⏳ = Planned, not yet created — scheduled for a specific upcoming Blueprint day
+- ⚠️ = Needs a minor doc update to reflect the Gemini switch
