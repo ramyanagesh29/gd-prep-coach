@@ -47,10 +47,10 @@ https://github.com/ramyanagesh29/gd-prep-coach
 ## Screenshots
 
 ### Before
-![Before UI](before-dashboard.png)
+![Before UI](./before-dashboard.png)
 
 ### After
-![After UI](after-dashboard.png)
+![After UI](./after-dashboard.png)
 
 
 
