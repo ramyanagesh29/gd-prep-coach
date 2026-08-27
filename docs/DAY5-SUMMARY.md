@@ -1,58 +1,53 @@
-# GD Prep Coach — Day 5 Summary
+# GD Prep Coach — Day 6 Summary
 
-**Day 5 of 10 | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
-**Focus:** AI Analysis Engine (Core Feature Development, continued)
+**Day 6 of 10 | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
+**Focus:** Complete the MVP & Deliver a Working Demo
 
 ---
 
 ## ✅ What Was Completed Today
 
-### Important Architecture Decision
-Switched the AI provider from **Anthropic Claude API** (as originally specified in the PRD) to **Google Gemini API** (`gemini-3.6-flash`, free tier). This was a deliberate choice to keep the entire capstone buildable with genuinely free tools, with no payment required at any point. The architecture, prompt design, and JSON contract are otherwise identical — this was a provider swap, not a redesign.
-
 ### Backend
-- Created `models/Attempt.js` — stores user responses, AI scores, and structured feedback, matching `SCHEMA.md`.
-- Created `services/analyzeResponse.js` — builds a structured evaluation prompt, calls Gemini, defensively parses and validates the JSON response (strips markdown fences, validates required fields, clamps score to 0-100).
-- Created `routes/attempts.js`:
-  - `POST /api/attempts` — saves the attempt **before** calling AI (so responses are never lost even if analysis fails), then attempts analysis and updates the record.
-  - `GET /api/attempts/history` — returns the logged-in user's past attempts, newest first, with topic titles populated.
-  - `GET /api/attempts/:id` — returns full attempt detail, with ownership check (`403` if attempt belongs to another user).
-- Updated `server.js` to mount the new attempts router.
+- Created `utils/streak.js` — pure functions to calculate consecutive-day streaks and weekly goal progress from attempt timestamps.
+- Created `routes/users.js`:
+  - `GET /api/users/dashboard` — returns streak, weekly goal, week progress, behind-pace flag, and 5 most recent attempts.
+  - `PUT /api/users/goal` — updates a user's weekly practice goal (validated 1-14).
+- Updated `server.js` to mount the new users router.
 
 ### Frontend
-- Created `hooks/useSpeechRecognition.js` — wraps the browser's Web Speech API, with graceful fallback messaging when unsupported.
-- Updated `TopicsPage.jsx` — "Start" now navigates to the real Practice page instead of showing a placeholder alert.
-- Rebuilt `PracticePage.jsx` — full text/voice response capture, live "Listening..." indicator, submit with loading state.
-- Rebuilt `ResultsPage.jsx` — displays score (color-coded), full feedback breakdown (clarity/structure/relevance/assertiveness), overall feedback, and improvement tips.
+- Created `StreakBadge.jsx` and `GoalProgressBar.jsx` components.
+- Rebuilt `DashboardPage.jsx` — real streak display, editable weekly goal, behind-pace reminder banner, recent attempts list, quick link to practice.
+- Rebuilt `HistoryPage.jsx` — full table of all past attempts with topic, score, and date.
+- Added the **required footer** ("Built with Claude as part of the AB Talks 60-Day Claude AI Challenge.") to `App.jsx`, visible on every page including the deployed live version.
 
-### Real-World Debugging
-- Hit a `404` error because `gemini-2.0-flash` had been deprecated by Google since the model list was last checked — fixed by switching to `gemini-3.6-flash`, exactly as Google's own error message instructed.
-- Verified error handling works correctly in practice: two early test attempts show `score: null` in the database from before the model-name fix, proving that failed AI analysis doesn't discard the user's saved response — exactly as designed in `API.md`.
-
-### Verification
-- Tested with a deliberately off-topic response → correctly scored low (15/100) with accurate, specific reasoning.
-- Tested with an on-topic but imperfect response → correctly scored higher (40/100) with different, genuinely differentiated feedback (grammar, structure, missing depth).
-- Verified `GET /api/attempts/history` via browser console — returned all 4 attempts correctly, scoped to the logged-in user, in the right order.
+### Deployment (Both Free Tier)
+- **Backend deployed to Render** — connected via GitHub, root directory set to `server`, environment variables configured in Render's dashboard, confirmed live with working health check.
+- **Frontend deployed to Vercel** — connected via GitHub, root directory set to `client`, `VITE_API_URL` environment variable pointed at the live Render backend.
+- Full end-to-end test completed **on the live deployed site** (not localhost): signup → topic browsing → practice submission → real AI feedback → dashboard → history, all confirmed working.
 
 ---
 
-## 🚧 What's Ready to Build Tomorrow
+## 🎉 MVP Status: Complete
 
-Per the Implementation Blueprint (Day 6 = **Practice History & Streak/Goals Dashboard**):
-- `server/utils/streak.js` — streak and weekly goal calculation logic
-- `server/routes/users.js` — dashboard summary endpoint, goal update endpoint
-- `client/src/pages/DashboardPage.jsx` — real streak, goal progress, reminder banner
-- `client/src/pages/HistoryPage.jsx` — full attempt history list (backend already supports this — just needs a frontend page)
+Every core feature from the PRD's v1.0 scope is now implemented, integrated, and live:
+Auth → Topics → Practice (text/voice) → AI Analysis (Gemini) → Results → History → Dashboard (streak/goals) → Footer.
 
-All backend groundwork for this (the `Attempt.createdAt` index, the working `/history` endpoint) is already in place from today.
+This is a genuinely shareable, demoable product — not a local-only prototype.
 
 ---
 
-## 🎯 Tomorrow's Objective
+## 🚧 What Still Needs Polishing
 
-Build the **Dashboard and History pages** — turning the raw attempt data we're already collecting into a motivating, trackable view: streak count, weekly goal progress, an in-app reminder if behind pace, and a full scrollable history of past attempts.
+- **Visual design:** Dashboard, History, and other pages are functionally complete but visually plain (default browser styling). Scheduled for tomorrow.
+- **CORS security:** Currently open to all origins for deployment simplicity; needs to be locked to the exact Vercel URL (Blueprint Day 9 task).
+- **No automated tests yet** — manual testing only so far (Blueprint Day 8 task).
+- Minor: some Dashboard test data (weekly goal defaults) reflects earlier manual testing values rather than clean defaults — cosmetic only, no functional impact.
 
-No additional setup or planning required — implementation begins immediately.
+---
+
+## 🎯 Tomorrow's Objective (Day 7 — UI/UX Polish)
+
+Apply a consistent design system across every screen: proper color palette (matching the navy/violet theme from the pitch deck), typography, spacing, card-based layouts for Dashboard/History/Topics, loading/empty/error states polished throughout, and full mobile responsiveness. No new features — purely visual and UX improvements on top of today's fully working MVP.
 
 ---
 
@@ -60,8 +55,7 @@ No additional setup or planning required — implementation begins immediately.
 
 | Issue | Resolution |
 |---|---|
-| Anthropic API requires payment; task required free tools only | Switched to Google Gemini API (free tier), same architecture |
-| `gemini-2.0-flash` returned 404 (deprecated) | Switched to `gemini-3.6-flash` per Google's own error message |
-| Needed to verify history data without a frontend page yet | Used browser console `fetch()` with JWT to confirm API correctness directly |
+| Needed to verify Render deployment logs before trusting it was live | Checked deploy logs directly for `Server running` / `MongoDB connected` / `service is live` confirmation |
+| Dashboard looked visually plain after functional build | Confirmed this is expected — Blueprint schedules visual polish as its own dedicated day (Day 7), not today |
 
-No blocking issues remain. Core AI feature is stable and verified end-to-end with real, differentiated scoring.
+No blocking issues remain. The MVP is live, functional, and ready to demo.
