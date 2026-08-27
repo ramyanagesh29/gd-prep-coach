@@ -1,6 +1,6 @@
 # GD Prep Coach — Project Structure
 
-**Updated Day 5 | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
+**Updated Day 6 | ABTalks 60-Day Claude AI Challenge — 10-Day Capstone**
 
 ```
 gd-prep-coach/
@@ -9,73 +9,81 @@ gd-prep-coach/
 │   │   ├── pages/
 │   │   │   ├── Login.jsx            ✅ Functional (Day 4)
 │   │   │   ├── Signup.jsx           ✅ Functional (Day 4)
-│   │   │   ├── DashboardPage.jsx    ⏳ Day 6
+│   │   │   ├── DashboardPage.jsx    ✅ Functional (Day 6) — streak, goal, recent attempts
 │   │   │   ├── TopicsPage.jsx       ✅ Functional (Day 4/5)
-│   │   │   ├── PracticePage.jsx     ✅ Functional (Day 5) — text + voice input
-│   │   │   ├── ResultsPage.jsx      ✅ Functional (Day 5) — AI score + feedback display
-│   │   │   └── HistoryPage.jsx      ⏳ Day 6
+│   │   │   ├── PracticePage.jsx     ✅ Functional (Day 5)
+│   │   │   ├── ResultsPage.jsx      ✅ Functional (Day 5)
+│   │   │   └── HistoryPage.jsx      ✅ Functional (Day 6) — full attempt table
 │   │   ├── components/
-│   │   │   ├── NavBar.jsx           ✅ Created (Day 3)
-│   │   │   ├── TopicCard.jsx        ✅ Created (Day 4)
-│   │   │   ├── ScoreBadge.jsx       ⏳ Day 6 (may fold into ResultsPage inline styling)
-│   │   │   ├── StreakBadge.jsx      ⏳ Day 6
-│   │   │   ├── GoalProgressBar.jsx  ⏳ Day 6
+│   │   │   ├── NavBar.jsx           ✅ (Day 3)
+│   │   │   ├── TopicCard.jsx        ✅ (Day 4)
+│   │   │   ├── StreakBadge.jsx      ✅ Created (Day 6)
+│   │   │   ├── GoalProgressBar.jsx  ✅ Created (Day 6)
+│   │   │   ├── ScoreBadge.jsx       ⏳ Day 7 (visual polish)
 │   │   │   ├── Toast.jsx            ⏳ Day 7
 │   │   │   └── EmptyState.jsx       ⏳ Day 7
 │   │   ├── hooks/
-│   │   │   └── useSpeechRecognition.js  ✅ Created (Day 5) — Web Speech API wrapper
+│   │   │   └── useSpeechRecognition.js  ✅ (Day 5)
 │   │   ├── api/
-│   │   │   └── axios.js             ✅ Created (Day 3)
-│   │   ├── App.jsx                  ✅ Routing (Day 3)
+│   │   │   └── axios.js             ✅ (Day 3) — now points to live backend via VITE_API_URL
+│   │   ├── App.jsx                  ✅ Updated (Day 6) — added required footer, flex layout
 │   │   └── main.jsx                 ✅ Vite default
 │   └── package.json                 ✅ Configured
 │
 ├── server/
 │   ├── models/
-│   │   ├── User.js                  ✅ Created (Day 3)
-│   │   ├── Topic.js                 ✅ Created (Day 4)
-│   │   └── Attempt.js               ✅ Created (Day 5) — score/feedback schema
+│   │   ├── User.js                  ✅ (Day 3)
+│   │   ├── Topic.js                 ✅ (Day 4)
+│   │   └── Attempt.js               ✅ (Day 5)
 │   ├── routes/
-│   │   ├── auth.js                  ✅ Implemented (Day 4) — signup/login
-│   │   ├── topics.js                ✅ Implemented (Day 4)
-│   │   ├── attempts.js              ✅ Implemented (Day 5) — POST, GET history, GET :id
-│   │   └── users.js                 ⏳ Day 6
+│   │   ├── auth.js                  ✅ (Day 4)
+│   │   ├── topics.js                ✅ (Day 4)
+│   │   ├── attempts.js              ✅ (Day 5)
+│   │   └── users.js                 ✅ Created (Day 6) — dashboard + goal endpoints
 │   ├── middleware/
-│   │   └── auth.js                  ✅ Created (Day 3)
+│   │   └── auth.js                  ✅ (Day 3)
 │   ├── services/
-│   │   └── analyzeResponse.js       ✅ Created (Day 5) — Gemini AI integration
+│   │   └── analyzeResponse.js       ✅ (Day 5) — Gemini AI integration
 │   ├── utils/
-│   │   └── streak.js                ⏳ Day 6
+│   │   └── streak.js                ✅ Created (Day 6) — streak & week-progress logic
 │   ├── seed/
-│   │   └── seedTopics.js            ✅ Created (Day 4) — 22 curated topics
-│   ├── server.js                    ✅ Updated (Day 5) — all routers mounted
+│   │   └── seedTopics.js            ✅ (Day 4)
+│   ├── server.js                    ✅ Updated (Day 6) — all routers mounted
 │   ├── package.json                 ✅ Configured
-│   └── .env                         ✅ Includes GEMINI_API_KEY (Day 5)
+│   └── .env                         ✅ (local only, git-ignored)
 │
 ├── docs/
-│   ├── ARCHITECTURE.md              ✅ (Day 2) — ⚠️ needs AI provider note (see below)
+│   ├── ARCHITECTURE.md              ✅ (Day 2)
 │   ├── SCHEMA.md                    ✅ (Day 2)
 │   ├── API.md                       ✅ (Day 2)
 │   ├── UI-WIREFRAMES.md             ✅ (Day 2)
-│   ├── PROJECT-STRUCTURE.md         ✅ This file, updated Day 5
+│   ├── PROJECT-STRUCTURE.md         ✅ This file, updated Day 6
 │   ├── SETUP.md                     ✅ (Day 3)
-│   ├── ENVIRONMENT.md               ✅ (Day 3) — ⚠️ needs GEMINI_API_KEY added
+│   ├── ENVIRONMENT.md               ✅ (Day 5)
 │   ├── DAY3-SUMMARY.md              ✅ (Day 3)
-│   └── DAY5-SUMMARY.md              ✅ New (Day 5)
+│   ├── DAY5-SUMMARY.md              ✅ (Day 5)
+│   ├── DAY6-SUMMARY.md              ✅ New (Day 6)
+│   └── DEPLOYMENT.md                ✅ New (Day 6)
 │
 ├── .gitignore
 └── README.md
 ```
 
-## Key Change: AI Provider Switched to Google Gemini
+## MVP Status: Complete ✅
 
-**Original plan (PRD/Architecture, Day 1-2):** Anthropic Claude API for response analysis.
+As of Day 6, every core feature from the PRD's "In Scope (v1.0)" list is implemented and working together as a live, deployed application:
 
-**Actual implementation (Day 5):** **Google Gemini API** (`gemini-3.6-flash` model, free tier).
+- ✅ Auth (signup/login, JWT)
+- ✅ Curated topic library with category filtering
+- ✅ Text + voice input (Web Speech API)
+- ✅ AI analysis (Google Gemini) with score + structured feedback
+- ✅ Practice history per user
+- ✅ Streak & weekly goal tracking with in-app reminder banner
+- ✅ Required footer: "Built with Claude as part of the AB Talks 60-Day Claude AI Challenge."
+- ✅ Deployed live (Render backend + Vercel frontend)
 
-**Reason for change:** Anthropic's Claude API is pay-as-you-go with no ongoing free tier. Google's Gemini API offers a genuine free tier (no credit card required), which better fits this capstone's constraint of using only free tools. The architecture, prompt design, JSON response contract, and error-handling logic are **unchanged** — only the SDK/provider call inside `analyzeResponse.js` differs. This is a drop-in swap, not a redesign.
+**Remaining before final v1.0 polish (Days 7-10):** visual design pass, structured testing, CORS lockdown, final documentation.
 
 ## Legend
 - ✅ = File exists and is functional as of today
-- ⏳ = Planned, not yet created — scheduled for a specific upcoming Blueprint day
-- ⚠️ = Needs a minor doc update to reflect the Gemini switch
+- ⏳ = Planned, scheduled for a specific upcoming Blueprint day
