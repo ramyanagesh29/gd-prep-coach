@@ -3,6 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 
+const CATEGORY_COLORS = {
+  'Current Affairs': '#4dabf7',
+  'Abstract': '#a99bff',
+  'Case Study': '#ffb547',
+  'Social Issues': '#2fd480',
+};
+
 export default function PracticePage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,12 +24,14 @@ export default function PracticePage() {
 
   if (!topic) {
     return (
-      <div>
+      <div className="card page-enter" style={{ maxWidth: '500px', margin: '60px auto', textAlign: 'center' }}>
         <p>No topic selected.</p>
-        <button onClick={() => navigate('/topics')}>Go to Topics</button>
+        <button onClick={() => navigate('/topics')} className="btn btn-primary">Go to Topics</button>
       </div>
     );
   }
+
+  const badgeColor = CATEGORY_COLORS[topic.category] || 'var(--color-accent)';
 
   function handleSpeakToggle() {
     if (isListening) {
@@ -57,37 +66,65 @@ export default function PracticePage() {
   }
 
   return (
-    <div style={{ maxWidth: '600px' }}>
-      <span style={{ fontSize: '0.8rem', color: '#666' }}>{topic.category}</span>
-      <h2>{topic.title}</h2>
-      <p style={{ color: '#444' }}>{topic.description}</p>
+    <div className="page-enter" style={{ maxWidth: '700px', margin: '0 auto' }}>
+      <div className="card">
+        <span
+          style={{
+            display: 'inline-block',
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            color: badgeColor,
+            background: `${badgeColor}22`,
+            padding: '3px 10px',
+            borderRadius: '999px',
+            marginBottom: '12px',
+          }}
+        >
+          {topic.category}
+        </span>
+        <h2 style={{ marginBottom: '8px' }}>{topic.title}</h2>
+        <p style={{ marginBottom: '20px' }}>{topic.description}</p>
 
-      <textarea
-        value={responseText}
-        onChange={(e) => { setInputMethod('text'); setResponseText(e.target.value); }}
-        placeholder="Type your response here, or use the Speak button..."
-        rows={8}
-        style={{ width: '100%', padding: '0.5rem', fontSize: '1rem' }}
-      />
+        <textarea
+          value={responseText}
+          onChange={(e) => { setInputMethod('text'); setResponseText(e.target.value); }}
+          placeholder="Type your response here, or use the Speak button..."
+          rows={8}
+          style={{ width: '100%', resize: 'vertical' }}
+        />
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
-        {isSupported ? (
-          <button onClick={handleSpeakToggle}>
-            {isListening ? '⏹ Stop' : '🎤 Speak'}
+        <div style={{ display: 'flex', gap: '12px', marginTop: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+          {isSupported ? (
+            <button
+              onClick={handleSpeakToggle}
+              className={isListening ? 'btn btn-primary' : 'btn btn-secondary'}
+            >
+              {isListening ? '⏹ Stop' : '🎤 Speak'}
+            </button>
+          ) : (
+            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-faint)' }}>
+              Voice input works best in Chrome. Please type your response instead.
+            </span>
+          )}
+
+          <button onClick={handleSubmit} disabled={submitting} className="btn btn-primary" style={{ marginLeft: 'auto' }}>
+            {submitting ? (
+              <>
+                <span className="spinner" /> Analyzing...
+              </>
+            ) : (
+              'Submit →'
+            )}
           </button>
-        ) : (
-          <span style={{ fontSize: '0.85rem', color: '#888' }}>
-            Voice input works best in Chrome. Please type your response instead.
-          </span>
+        </div>
+
+        {isListening && (
+          <p style={{ color: 'var(--color-danger)', marginTop: '10px', fontSize: '0.9rem' }}>
+            🔴 Listening...
+          </p>
         )}
-
-        <button onClick={handleSubmit} disabled={submitting}>
-          {submitting ? 'Analyzing...' : 'Submit →'}
-        </button>
+        {error && <p style={{ color: 'var(--color-danger)', marginTop: '10px', fontSize: '0.9rem' }}>{error}</p>}
       </div>
-
-      {isListening && <p style={{ color: '#0a7' }}>🔴 Listening...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 }

@@ -1,9 +1,13 @@
 export default function StreakBadge({ streak }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-      <span style={{ fontSize: '1.5rem' }}>🔥</span>
-      <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{streak}</span>
-      <span style={{ color: '#666' }}>day{streak === 1 ? '' : 's'} streak</span>
+    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 20px' }}>
+      <span style={{ fontSize: '2rem' }}>🔥</span>
+      <div>
+        <div style={{ fontSize: '1.5rem', fontWeight: 800, lineHeight: 1 }}>{streak}</div>
+        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+          day{streak === 1 ? '' : 's'} streak
+        </div>
+      </div>
     </div>
   );
 }

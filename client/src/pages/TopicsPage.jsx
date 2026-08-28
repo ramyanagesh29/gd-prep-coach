@@ -34,37 +34,37 @@ export default function TopicsPage() {
   }
 
   return (
-    <div>
+    <div className="page-enter" style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
       <h2>GD Topics</h2>
+      <p style={{ marginBottom: '20px' }}>Pick a topic and start practicing — your AI coach is ready.</p>
 
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            style={{
-              fontWeight: selectedCategory === cat ? 'bold' : 'normal',
-              backgroundColor: selectedCategory === cat ? '#333' : '#eee',
-              color: selectedCategory === cat ? '#fff' : '#000',
-              padding: '0.4rem 0.8rem',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
+            className={selectedCategory === cat ? 'btn btn-primary' : 'btn btn-secondary'}
+            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {loading && <p>Loading topics...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-text-muted)' }}>
+          <span className="spinner" /> Loading topics...
+        </div>
+      )}
+      {error && <p style={{ color: 'var(--color-danger)' }}>{error}</p>}
 
       {!loading && !error && topics.length === 0 && (
-        <p>No topics found in this category.</p>
+        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+          <p style={{ marginBottom: 0 }}>No topics found in this category. Try a different filter.</p>
+        </div>
       )}
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '18px' }}>
         {topics.map((topic) => (
           <TopicCard key={topic._id} topic={topic} onStart={handleStart} />
         ))}

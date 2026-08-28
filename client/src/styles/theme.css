@@ -200,3 +200,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   h2 { font-size: 1.4rem; }
   .hide-mobile { display: none; }
 }
+/* Fix Chrome autofill forcing a light background on inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text);
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+/* Mobile page padding */
+@media (max-width: 640px) {
+  .card {
+    padding: var(--space-3) !important;
+  }
+}

@@ -44,64 +44,90 @@ export default function DashboardPage() {
     }
   }
 
-  if (loading) return <p>Loading dashboard...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-text-muted)' }}>
+        <span className="spinner" /> Loading dashboard...
+      </div>
+    );
+  }
+  if (error) return <p style={{ color: 'var(--color-danger)' }}>{error}</p>;
   if (!data) return null;
 
   return (
-    <div style={{ maxWidth: '700px' }}>
+    <div className="page-enter" style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}>
       <h2>Dashboard</h2>
 
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'stretch', marginBottom: '20px', flexWrap: 'wrap' }}>
         <StreakBadge streak={data.streak} />
 
         {editingGoal ? (
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div className="card" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <input
               type="number"
               min="1"
               max="14"
               value={goalInput}
               onChange={(e) => setGoalInput(e.target.value)}
-              style={{ width: '60px' }}
+              style={{ width: '70px' }}
             />
-            <button onClick={handleGoalSave}>Save</button>
-            <button onClick={() => setEditingGoal(false)}>Cancel</button>
+            <button onClick={handleGoalSave} className="btn btn-primary">Save</button>
+            <button onClick={() => setEditingGoal(false)} className="btn btn-secondary">Cancel</button>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <GoalProgressBar weekProgress={data.weekProgress} weeklyGoal={data.weeklyGoal} />
-            <button onClick={() => setEditingGoal(true)} style={{ fontSize: '0.8rem' }}>Edit Goal</button>
+            <button onClick={() => setEditingGoal(true)} className="btn-ghost" style={{ background: 'none', border: 'none' }}>
+              Edit Goal
+            </button>
           </div>
         )}
       </div>
 
       {data.behindPace && (
-        <div style={{ background: '#3a2a00', color: '#ffcc66', padding: '0.75rem 1rem', borderRadius: '6px', marginBottom: '1rem' }}>
+        <div
+          style={{
+            background: 'rgba(255, 181, 71, 0.12)',
+            border: '1px solid var(--color-warning)',
+            color: 'var(--color-warning)',
+            padding: '12px 18px',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: '20px',
+          }}
+        >
           ⏰ You're behind pace this week — practice today to stay on track!
         </div>
       )}
 
-      <div style={{ marginBottom: '1rem' }}>
-        <Link to="/topics">
-          <button>Practice a Topic →</button>
-        </Link>
-      </div>
+      <Link to="/topics">
+        <button className="btn btn-primary" style={{ marginBottom: '28px' }}>Practice a Topic →</button>
+      </Link>
 
       <h3>Recent Attempts</h3>
       {data.recentAttempts.length === 0 ? (
-        <p style={{ color: '#888' }}>No attempts yet. Start practicing to see your progress here!</p>
+        <div className="card" style={{ textAlign: 'center', padding: '32px' }}>
+          <p style={{ margin: 0 }}>No attempts yet. Start practicing to see your progress here!</p>
+        </div>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {data.recentAttempts.map((a) => (
-            <li key={a._id} style={{ padding: '0.5rem 0', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between' }}>
+        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+          {data.recentAttempts.map((a, i) => (
+            <div
+              key={a._id}
+              style={{
+                padding: '14px 20px',
+                borderBottom: i < data.recentAttempts.length - 1 ? '1px solid var(--color-border)' : 'none',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
               <span>{a.topicTitle}</span>
-              <span>
-                <strong>{a.score ?? '—'}</strong> · {new Date(a.createdAt).toLocaleDateString()}
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
+                <strong style={{ color: 'var(--color-text)' }}>{a.score ?? '—'}</strong> · {new Date(a.createdAt).toLocaleDateString()}
               </span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
