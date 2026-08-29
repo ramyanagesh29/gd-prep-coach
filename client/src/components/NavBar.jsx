@@ -1,8 +1,14 @@
-import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('token'));
+  }, [location]);
 
   const linkStyle = ({ isActive }) => ({
     padding: '8px 14px',
@@ -20,8 +26,6 @@ export default function NavBar() {
     localStorage.removeItem('user');
     window.location.href = '/';
   }
-
-  const isLoggedIn = !!localStorage.getItem('token');
 
   return (
     <nav
