@@ -1,15 +1,20 @@
 {
-  "name": "server",
+  "name": "gd-prep-coach-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend API for GD Prep Coach — an AI-powered Group Discussion practice and feedback platform.",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["gd-prep-coach", "group-discussion", "ai-feedback", "express", "mongodb"],
+  "author": "Ramya N",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ramyanagesh29/gd-prep-coach.git",
+    "directory": "server"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.3",
