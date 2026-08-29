@@ -36,28 +36,43 @@ export default function Signup() {
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password (min 6 characters)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {error && <p style={{ color: 'var(--color-danger)', fontSize: '0.85rem', margin: 0 }}>{error}</p>}
+          <div>
+            <label htmlFor="signup-name" style={visuallyHiddenStyle}>Name</label>
+            <input
+              id="signup-name"
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div>
+            <label htmlFor="signup-email" style={visuallyHiddenStyle}>Email</label>
+            <input
+              id="signup-email"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div>
+            <label htmlFor="signup-password" style={visuallyHiddenStyle}>Password</label>
+            <input
+              id="signup-password"
+              type="password"
+              placeholder="Password (min 6 characters)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{ width: '100%' }}
+            />
+          </div>
+          {error && <p role="alert" style={{ color: 'var(--color-danger)', fontSize: '0.85rem', margin: 0 }}>{error}</p>}
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', padding: '12px' }}>
             {loading ? <span className="spinner" /> : 'Sign Up'}
           </button>
@@ -77,4 +92,16 @@ const authWrapperStyle = {
   justifyContent: 'center',
   minHeight: 'calc(100vh - 140px)',
   padding: '24px',
+};
+
+const visuallyHiddenStyle = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  padding: 0,
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
 };

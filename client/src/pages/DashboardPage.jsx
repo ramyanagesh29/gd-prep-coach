@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import StreakBadge from '../components/StreakBadge';
 import GoalProgressBar from '../components/GoalProgressBar';
@@ -10,7 +10,6 @@ export default function DashboardPage() {
   const [error, setError] = useState('');
   const [editingGoal, setEditingGoal] = useState(false);
   const [goalInput, setGoalInput] = useState(3);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDashboard();
@@ -24,10 +23,6 @@ export default function DashboardPage() {
       setData(res.data);
       setGoalInput(res.data.weeklyGoal);
     } catch (err) {
-      if (err.response?.status === 401) {
-        navigate('/');
-        return;
-      }
       setError(err.response?.data?.error || 'Failed to load dashboard');
     } finally {
       setLoading(false);
@@ -63,7 +58,11 @@ export default function DashboardPage() {
 
         {editingGoal ? (
           <div className="card" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <label htmlFor="weekly-goal-input" style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+              Goal
+            </label>
             <input
+              id="weekly-goal-input"
               type="number"
               min="1"
               max="14"
@@ -86,6 +85,7 @@ export default function DashboardPage() {
 
       {data.behindPace && (
         <div
+          role="alert"
           style={{
             background: 'rgba(255, 181, 71, 0.12)',
             border: '1px solid var(--color-warning)',

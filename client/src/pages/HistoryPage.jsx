@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 function scoreColor(score) {
@@ -13,7 +12,6 @@ export default function HistoryPage() {
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchHistory() {
@@ -21,10 +19,6 @@ export default function HistoryPage() {
         const res = await api.get('/attempts/history');
         setAttempts(res.data);
       } catch (err) {
-        if (err.response?.status === 401) {
-          navigate('/');
-          return;
-        }
         setError(err.response?.data?.error || 'Failed to load history');
       } finally {
         setLoading(false);

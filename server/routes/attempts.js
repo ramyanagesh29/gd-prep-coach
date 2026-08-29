@@ -1,17 +1,21 @@
- const express = require('express');
+const express = require('express');
 const router = express.Router();
 const Attempt = require('../models/Attempt');
 const Topic = require('../models/Topic');
 const protect = require('../middleware/auth');
 const analyzeResponse = require('../services/analyzeResponse');
+const { isValidObjectId, isValidResponseText, MAX_RESPONSE_LENGTH } = require('../utils/validators');
 
 // POST /api/attempts - submit a response, trigger AI analysis
-router.post('/', protect, async (req, res) => {
+router.post('/', protect, async (req, res, next) => {
   try {
     const { topicId, responseText, inputMethod } = req.body;
 
-    if (!topicId || !responseText || !responseText.trim() || !inputMethod) {
-      return res.status(400).json({ error: 'topicId, responseText, and inputMethod are required' });
+    if (!topicId || !isValidObjectId(topicId)) {
+      return res.status(400).json({ error: 'A valid topicId is required' });
+    }
+    if (!isValidResponseText(responseText)) {
+      return res.status(400).json({ error: `Response must be between 1 and ${MAX_RESPONSE_LENGTH} characters` });
     }
     if (!['text', 'voice'].includes(inputMethod)) {
       return res.status(400).json({ error: 'inputMethod must be "text" or "voice"' });
@@ -30,7 +34,7 @@ router.post('/', protect, async (req, res) => {
     });
 
     try {
-      const analysis = await analyzeResponse(topic.title, topic.description, responseText);
+      const analysis = await analyzeResponse(topic.title, topic.description, responseText.trim());
       attempt.score = analysis.score;
       attempt.feedback = {
         clarity: analysis.clarity,
@@ -51,17 +55,17 @@ router.post('/', protect, async (req, res) => {
       });
     }
   } catch (err) {
-    console.error('Attempt submission failed:', err.message);
-    res.status(500).json({ error: 'Failed to submit attempt' });
+    next(err);
   }
 });
 
 // GET /api/attempts/history - list logged-in user's past attempts
-router.get('/history', protect, async (req, res) => {
+router.get('/history', protect, async (req, res, next) => {
   try {
     const attempts = await Attempt.find({ userId: req.userId })
       .populate('topicId', 'title category')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(200);
 
     const formatted = attempts.map((a) => ({
       _id: a._id,
@@ -73,13 +77,17 @@ router.get('/history', protect, async (req, res) => {
 
     res.status(200).json(formatted);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch history' });
+    next(err);
   }
 });
 
 // GET /api/attempts/:id - get full detail of one attempt
-router.get('/:id', protect, async (req, res) => {
+router.get('/:id', protect, async (req, res, next) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid attempt ID' });
+    }
+
     const attempt = await Attempt.findById(req.params.id).populate('topicId', 'title category description');
 
     if (!attempt) {
@@ -91,7 +99,7 @@ router.get('/:id', protect, async (req, res) => {
 
     res.status(200).json(attempt);
   } catch (err) {
-    res.status(404).json({ error: 'Attempt not found' });
+    next(err);
   }
 });
 

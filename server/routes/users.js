@@ -6,7 +6,7 @@ const protect = require('../middleware/auth');
 const { calculateStreak, calculateWeekProgress } = require('../utils/streak');
 
 // GET /api/users/dashboard
-router.get('/dashboard', protect, async (req, res) => {
+router.get('/dashboard', protect, async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) {
@@ -15,7 +15,8 @@ router.get('/dashboard', protect, async (req, res) => {
 
     const attempts = await Attempt.find({ userId: req.userId })
       .populate('topicId', 'title')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(500);
 
     const attemptDates = attempts.map((a) => a.createdAt);
     const streak = calculateStreak(attemptDates);
@@ -36,13 +37,12 @@ router.get('/dashboard', protect, async (req, res) => {
       recentAttempts,
     });
   } catch (err) {
-    console.error('Dashboard fetch failed:', err.message);
-    res.status(500).json({ error: 'Failed to load dashboard' });
+    next(err);
   }
 });
 
 // PUT /api/users/goal
-router.put('/goal', protect, async (req, res) => {
+router.put('/goal', protect, async (req, res, next) => {
   try {
     const { weeklyGoal } = req.body;
 
@@ -62,7 +62,7 @@ router.put('/goal', protect, async (req, res) => {
 
     res.status(200).json({ weeklyGoal: user.weeklyGoal });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update goal' });
+    next(err);
   }
 });
 
