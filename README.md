@@ -15,7 +15,6 @@ Practice for Group Discussion interview rounds by typing or speaking your respon
 |---|---|---|
 | Streak tracking, weekly goals, recent attempts | Text or voice input for any GD topic | Color-coded AI score + detailed feedback |
 
-*(Add screenshots to `docs/screenshots/` and reference them here — see `docs/DEPLOYMENT.md` for details.)*
 
 ---
 
